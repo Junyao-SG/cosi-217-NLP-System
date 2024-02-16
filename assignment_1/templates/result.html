@@ -6,12 +6,19 @@
 
   <body>
 
-    <h2>spaCy entity parsing</h2>
+    <h2>spaCy NER and Dependency</h2>
 
     <p>Processing results:</p>
 
     <div>
-      {{ markup | safe }}
+      <h3>NER</h3>
+      {{ markup_ner | safe }}
+    </div>
+    
+    <div>
+      <h3>Dependency</h3>
+      <pre>{{ markup_dep }}</pre>
+      <!-- {{ markup_dep | safe }} -->
     </div>
 
     <p><a href="">back to form</a></p>

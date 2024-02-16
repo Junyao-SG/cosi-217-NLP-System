@@ -11,31 +11,26 @@ def index():
     else:
         text = request.form['text']
         doc = ner_dep.SpacyDocument(text)
-        markup = doc.get_entities_with_markup()
-        markup_paragraphed = ''
-        for line in markup.split('\n'):
-            if line.strip() == '':
-                markup_paragraphed += '<p/>\n'
-            else:
-                markup_paragraphed += line
-        return render_template('result.html', markup=markup_paragraphed)
+        markup_ner = doc.get_entities_with_markup()
+        markup_dep = doc.get_dependencies_with_markup()
 
-@app.get('/get')
-def index_get():
-    return render_template('form2.html', input=open('input.txt').read())
+        markup_ner_formatted = format_markup_ner(markup_ner)
+        # markup_dep_formatted = format_markup(markup_dep)
 
-@app.post('/post')
-def index_post():
-    text = request.form['text']
-    doc = ner_dep.SpacyDocument(text)
-    markup = doc.get_entities_with_markup()
+        return render_template('result.html', 
+                               markup_ner=markup_ner_formatted, 
+                               markup_dep=markup_dep
+                               )
+
+def format_markup_ner(markup):
     markup_paragraphed = ''
     for line in markup.split('\n'):
         if line.strip() == '':
             markup_paragraphed += '<p/>\n'
         else:
             markup_paragraphed += line
-    return render_template('result2.html', markup=markup_paragraphed)
+    return markup_paragraphed
+
 
 
 if __name__ == '__main__':
