@@ -1,18 +1,21 @@
 from fastapi import FastAPI, Response
 from pydantic import BaseModel
-import spacy
+import ner_dep
 import json
 
 
 app = FastAPI()
-nlp = spacy.load("en_core_web_sm")
 
 class TextModel(BaseModel):
     text: str
 
 @app.get("/")
 def fastapi_spacy(pretty: bool = False):
-    message = {"Message": "This is a pretty page built on FastAPI to access spacy NER and dependency parsing."}
+    example_url = "http://127.0.0.1:8000/ner?pretty=true"
+    message = {
+        "description": "Fastapi webpage to access the spaCy NER and Dependency",
+        "usage_example": f"curl {example_url} -H 'Content-Type: application/json' -d@input.json"
+        }
     
     if pretty:
         return prettify(message)
@@ -22,11 +25,11 @@ def fastapi_spacy(pretty: bool = False):
 
 @app.post("/ner")
 def named_entities_recognition(text_model: TextModel, pretty: bool = False):
-    doc = nlp(text_model.text)
-    entities = [{"text": ent.text, "label": ent.label_} for ent in doc.ents]
+    
+    doc = ner_dep.SpacyDocument(text_model.text)
+    entities = doc.get_entities()
 
     ans = {"Entities": entities}
-
     if pretty:
         return prettify(ans)
     
@@ -35,8 +38,8 @@ def named_entities_recognition(text_model: TextModel, pretty: bool = False):
 
 @app.post("/dep")
 def dependency_parsing(text_model: TextModel, pretty: bool = False):
-    doc = nlp(text_model.text)
-    dependencies = [{"text": token.text, "dep": token.dep_, "head": token.head.text} for token in doc]
+    doc = ner_dep.SpacyDocument(text_model.text)
+    dependencies = doc.get_dependencies()
 
     ans = {"Dependencies": dependencies}
 

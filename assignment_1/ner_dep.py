@@ -31,20 +31,12 @@ class SpacyDocument:
             buffer.write(char)
         markup = buffer.getvalue()
         return '<markup>%s</markup>' % markup
+    
+    def get_dependencies(self) -> str:
+        return [{"text": token.text, 
+                 "dep": token.dep_, 
+                 "head": token.head.text} for token in self.doc]
 
 
 if __name__ == '__main__':
-
-    example = (
-        "When Sebastian Thrun started working on self-driving cars at "
-        "Google in 2007, few people outside of the company took him "
-        "seriously. “I can tell you very senior CEOs of major American "
-        "car companies would shake my hand and turn away because I wasn’t "
-        "worth talking to,” said Thrun, in an interview with Recode earlier "
-        "this week.")
-
-    doc = SpacyDocument(example)
-    print(doc.get_tokens())
-    for entity in doc.get_entities():
-        print(entity)
-    print(doc.get_entities_with_markup())
+    pass

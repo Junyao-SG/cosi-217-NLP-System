@@ -1,10 +1,8 @@
 from flask import Flask, request, render_template
-import ner
+import ner_dep
 
 
 app = Flask(__name__)
-
-# For the website we use the regular Flask functionality and serve up HTML pages.
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -12,7 +10,7 @@ def index():
         return render_template('form.html', input=open('input.txt').read())
     else:
         text = request.form['text']
-        doc = ner.SpacyDocument(text)
+        doc = ner_dep.SpacyDocument(text)
         markup = doc.get_entities_with_markup()
         markup_paragraphed = ''
         for line in markup.split('\n'):
@@ -22,8 +20,6 @@ def index():
                 markup_paragraphed += line
         return render_template('result.html', markup=markup_paragraphed)
 
-# alternative where we use two resources
-
 @app.get('/get')
 def index_get():
     return render_template('form2.html', input=open('input.txt').read())
@@ -31,7 +27,7 @@ def index_get():
 @app.post('/post')
 def index_post():
     text = request.form['text']
-    doc = ner.SpacyDocument(text)
+    doc = ner_dep.SpacyDocument(text)
     markup = doc.get_entities_with_markup()
     markup_paragraphed = ''
     for line in markup.split('\n'):
@@ -43,5 +39,4 @@ def index_post():
 
 
 if __name__ == '__main__':
-
     app.run(debug=True)
