@@ -16,6 +16,7 @@ st.sidebar.info(f'Selected: {view}')
 
 text = st.text_area('Text to process', value=example, height=100)
 
+# processing text for randering
 doc = ner_dep.SpacyDocument(text)
 
 entities = doc.get_entities()
@@ -38,6 +39,7 @@ for token in doc.get_doc():
 st.markdown(f'Total number of tokens: {len(tokens)}<br/>'
             f'Total number of types: {len(counter)}', unsafe_allow_html=True)
 
+# rander tabs for table and graph
 tab1, tab2 = st.tabs(["table", "graph"])
 
 with tab1:
