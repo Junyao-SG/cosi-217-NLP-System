@@ -42,7 +42,7 @@ class SpacyDocument:
     def get_dependencies_with_markup(self) -> str:
         dep_markup = ""
         for token in self.doc:
-            dep_markup += f" {token.head.text}   {token.dep_}   {token.text} \n"
+            dep_markup += f" {token.head.text: <30}   {token.dep_ : ^15}   {token.text : >30} \n"
 
         return dep_markup
 
