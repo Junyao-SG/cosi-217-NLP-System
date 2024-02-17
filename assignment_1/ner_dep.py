@@ -9,6 +9,9 @@ class SpacyDocument:
         self.text = text
         self.doc = nlp(text)
 
+    def get_doc(self):
+        return self.doc
+
     def get_tokens(self) -> list:
         return [token.lemma_ for token in self.doc]
 
