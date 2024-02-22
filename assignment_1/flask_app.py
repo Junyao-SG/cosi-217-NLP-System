@@ -1,8 +1,8 @@
 from flask import Flask, request, render_template
 import ner_dep
 
-
 app = Flask(__name__)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -21,8 +21,8 @@ def index():
             else:
                 markup_paragraphed += line
 
-        return render_template('result.html', 
-                               markup_ner=markup_paragraphed, 
+        return render_template('result.html',
+                               markup_ner=markup_paragraphed,
                                markup_dep=markup_dep
                                )
 

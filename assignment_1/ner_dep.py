@@ -1,7 +1,10 @@
 import io
+from typing import List, Dict, Any, Tuple
+
 import spacy
 
 nlp = spacy.load("en_core_web_sm")
+
 
 class SpacyDocument:
 
@@ -15,7 +18,7 @@ class SpacyDocument:
     def get_tokens(self) -> list:
         return [token.lemma_ for token in self.doc]
 
-    def get_entities(self) -> str:
+    def get_entities(self) -> list[tuple[Any, Any, Any, str]]:
         entities = []
         for e in self.doc.ents:
             entities.append((e.start_char, e.end_char, e.label_, e.text))
@@ -36,12 +39,12 @@ class SpacyDocument:
         markup = buffer.getvalue()
 
         return '<markup>%s</markup>' % markup
-    
-    def get_dependencies(self) -> str:
-        return [{"text": token.text, 
-                 "dep": token.dep_, 
+
+    def get_dependencies(self) -> list[dict[str, str | Any]]:
+        return [{"text": token.text,
+                 "dep": token.dep_,
                  "head": token.head.text} for token in self.doc]
-    
+
     def get_dependencies_with_markup(self) -> str:
         dep_markup = ""
         for token in self.doc:

@@ -6,17 +6,17 @@ from graphviz import Digraph
 import ner_dep
 
 
-example = ("Sebastian Thrun worked at Google in 2007.")
+example = "Sebastian Thrun worked at Google in 2007."
 
 st.title("spaCy NER and Dependency")
 
 st.sidebar.title("Setting")
-view = st.sidebar.radio('select view', ['entites', 'dependencies'])
+view = st.sidebar.radio('select view', ['entities', 'dependencies'])
 st.sidebar.info(f'Selected: {view}')
 
 text = st.text_area('Text to process', value=example, height=100)
 
-# processing text for randering
+# processing text for rendering
 doc = ner_dep.SpacyDocument(text)
 
 entities = doc.get_entities()
@@ -43,14 +43,14 @@ st.markdown(f'Total number of tokens: {len(tokens)}<br/>'
 tab1, tab2 = st.tabs(["table", "graph"])
 
 with tab1:
-    if view == 'entites':
+    if view == 'entities':
         st.header("entities")
         st.dataframe(entities, use_container_width=True)
     elif view == 'dependencies':
         st.dataframe(dep, use_container_width=True)
 
 with tab2:
-    if view == 'entites':
+    if view == 'entities':
         st.header("frequency")
         st.altair_chart(bar_chart)
     elif view == 'dependencies':

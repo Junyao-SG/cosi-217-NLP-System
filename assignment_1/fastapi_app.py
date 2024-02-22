@@ -3,11 +3,12 @@ from pydantic import BaseModel
 import ner_dep
 import json
 
-
 app = FastAPI()
+
 
 class TextModel(BaseModel):
     text: str
+
 
 @app.get("/")
 def fastapi_spacy(pretty: bool = False):
@@ -15,24 +16,23 @@ def fastapi_spacy(pretty: bool = False):
     message = {
         "description": "Fastapi webpage to access the spaCy NER and Dependency",
         "usage_example": f"curl {example_url} -H 'Content-Type: application/json' -d@input.json"
-        }
-    
+    }
+
     if pretty:
         return prettify(message)
-    
+
     return message
 
 
 @app.post("/ner")
 def named_entities_recognition(text_model: TextModel, pretty: bool = False):
-    
     doc = ner_dep.SpacyDocument(text_model.text)
     entities = doc.get_entities()
 
     ans = {"Entities": entities}
     if pretty:
         return prettify(ans)
-    
+
     return ans
 
 
@@ -45,7 +45,7 @@ def dependency_parsing(text_model: TextModel, pretty: bool = False):
 
     if pretty:
         return prettify(ans)
-    
+
     return ans
 
 
