@@ -38,6 +38,6 @@ This flask app will be running on http://127.0.0.1:5000
 
 ### Streamlit
 ```bash
-streamlit run treamlit_app.py
+streamlit run streamlit_app.py
 ```
 This streamlit app will run on http://localhost:8501
