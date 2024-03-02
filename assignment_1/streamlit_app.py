@@ -11,7 +11,9 @@ example = "Sebastian Thrun worked at Google in 2007."
 st.title("spaCy NER and Dependency")
 
 st.sidebar.title("Setting")
-view = st.sidebar.radio('select view', ['entities', 'dependencies'])
+view = st.sidebar.radio('select view',
+                        ['entities', 'dependencies']
+                        )
 st.sidebar.info(f'Selected: {view}')
 
 text = st.text_area('Text to process', value=example, height=100)

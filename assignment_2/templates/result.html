@@ -1,0 +1,41 @@
+<html>
+
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+  </head>
+
+  <body>
+
+    <h2>spaCy entity parsing</h2>
+
+    <p>Processing results:</p>
+
+    <div>
+      {{ markup | safe }}
+    </div>
+
+    <p/>
+
+    <div>
+      {% for sentence in dependencies %}
+      <p>{{ sentence[0] }}</p>
+      <blockquote>
+      <table cellpadding="5">
+        {% for dep in sentence[1] %}
+        <tr>
+          <td>{{ dep[1] }}</td>
+          <td>{{ dep[2] }}</td>
+          <td>{{ dep[3] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      </blockquote>
+      <p>{{ sentence[2] }}</p>
+      {% endfor %}
+    </div>
+
+    <p><a href="">back to form</a></p>
+
+  </body>
+
+</html>
