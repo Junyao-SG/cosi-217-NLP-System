@@ -1,19 +1,11 @@
-"""Simple Web interface to spaCy
-
-To see the pages point your browser at http://127.0.0.1:5000.
-
-"""
-
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 import ner
-import utils
 
 
 app = Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ner.db'  # Update as needed
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ner.db'
 db = SQLAlchemy(app)
 
 # Database Model
