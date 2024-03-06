@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data - NER</title>
+</head>
+<body>
+    <h2>All NER Results</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Sentence</th>
+            <th>Entity</th>
+            <th>Entity Type</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for result in all_data %}
+            <tr>
+                <td>{{ result.id }}</td>
+                <td>{{ result.sentence }}</td>
+                <td>{{ result.entity }}</td>
+                <td>{{ result.entity_type }}</td>
+                <td>{{ result.timestamp }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="/">back to form</a></p>
+
+</body>
+</html>
