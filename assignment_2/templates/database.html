@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NER Data</title>
+    <style>
+        .sentence {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .entity {
+            background-color: #f2f2f2;
+            padding: 5px;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Named Entity Recognition Data</h1>
+    <br>
+    <p><a href="/">back to form</a></p>
+
+    {% for sentence in sentences %}
+        <div class="sentence">
+            <strong>Timestamp:</strong> {{ sentence.timestamp }}
+            <br>
+            <strong>Sentence:</strong> {{ sentence.sentence }}
+            <div>
+                <strong>Entities:</strong>
+                <ul>
+                    {% for entity in sentence.ner %}
+                        <li class="entity">{{ entity.entity_type }}: {{ entity.entity }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endfor %}
+
+</body>
+</html>

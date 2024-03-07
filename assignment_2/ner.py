@@ -23,6 +23,18 @@ class SpacyDocument:
         for e in self.doc.ents:
             entities.append((e.start_char, e.end_char, e.label_, e.text))
         return entities
+    
+    def get_entities_sentence_wise(self) -> list:
+        entities = []
+
+        for sentence in self.doc.sents:
+            sent_entities = []
+            for entity in sentence.ents:
+                sent_entities.append((entity.label_, entity.text))
+            
+            entities.append((str(sentence), sent_entities))
+
+        return entities
 
     def get_entities_with_markup(self) -> str:
         entities = self.doc.ents
@@ -45,8 +57,10 @@ class SpacyDocument:
         for sentence in self.doc.sents:
             sent_deps = []
             for token in sentence:
-                sent_deps.append(
-                    (token.is_sent_start, token.head.text, token.dep_, token.text))
+                sent_deps.append((token.is_sent_start, 
+                                  token.head.text, 
+                                  token.dep_, 
+                                  token.text))
             dependencies.append((str(sentence), sent_deps))
         return dependencies
 
@@ -62,3 +76,5 @@ if __name__ == '__main__':
     for entity in doc.get_entities():
         print(entity)
     print(doc.get_entities_with_markup())
+
+    print(doc.get_entities_sentence_wise())
