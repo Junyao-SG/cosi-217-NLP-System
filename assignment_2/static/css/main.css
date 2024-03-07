@@ -70,3 +70,27 @@ span.category {
     vertical-align: middle;
     margin-left: 0.5rem;
 }
+
+
+.styled-button {
+    display: inline-block;
+    padding: 1em;
+    background-color: #3e409e;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 20% / 50%;
+}
+
+.sentence {
+    margin-top: 1em;
+    padding: 1em;
+    border: 1em solid #ddd;
+}
+
+.entity {
+    background-color: #f2f2f2;
+    padding: 1em;
+    margin: 1em;
+}

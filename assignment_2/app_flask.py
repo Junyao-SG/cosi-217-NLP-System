@@ -66,7 +66,6 @@ def database():
     return render_template('database.html', sentences=sentences)
 
 
-
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

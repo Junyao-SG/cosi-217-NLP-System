@@ -3,25 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>NER Data</title>
-    <style>
-        .sentence {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .entity {
-            background-color: #f2f2f2;
-            padding: 5px;
-            margin: 5px 0;
-            border-radius: 3px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
 </head>
 <body>
     <h1>Named Entity Recognition Data</h1>
     <br>
-    <p><a href="/">back to form</a></p>
+    <p><a href="/" class="styled-button">back to form</a></p>
+    <br>
 
     {% for sentence in sentences %}
         <div class="sentence">
