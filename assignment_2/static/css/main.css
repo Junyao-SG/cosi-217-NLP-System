@@ -87,10 +87,12 @@ span.category {
     margin-top: 1em;
     padding: 1em;
     border: 1em solid #ddd;
+    border-radius: 1em;
 }
 
 .entity {
     background-color: #f2f2f2;
     padding: 1em;
     margin: 1em;
+    border-radius: 0.35em;
 }
