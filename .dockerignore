@@ -1,0 +1,7 @@
+.git
+.gitignore
+.Da_Store
+*/instance
+*/__*
+Docker*
+.docker*
