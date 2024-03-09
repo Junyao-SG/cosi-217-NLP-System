@@ -60,10 +60,10 @@ def result():
 
     return render_template('result.html', markup=markup_paragraphed, dependencies=deps)
 
-@app.get('/database')
+@app.get('/data')
 def database():
     sentences = Sentence.query.all()
-    return render_template('database.html', sentences=sentences)
+    return render_template('data.html', sentences=sentences)
 
 
 if __name__ == '__main__':
