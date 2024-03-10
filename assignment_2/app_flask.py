@@ -3,10 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 import ner
 
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ner_dep.db'
 db = SQLAlchemy(app)
+
 
 # data models
 class Entity(db.Model):
@@ -15,6 +15,7 @@ class Entity(db.Model):
     # type = db.Column(db.String, nullable=False)
     count = db.Column(db.Integer, default=0, nullable=False)
     token = db.relationship('Token', backref='author', lazy=True)
+
 
 class Token(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,6 +32,7 @@ def index():
         input_text = file.read()
     return render_template('form.html', input=input_text)
 
+
 @app.post('/')
 def result():
     text = request.form['text']
@@ -44,12 +46,12 @@ def result():
             markup_paragraphed += '<p/>\n'
         else:
             markup_paragraphed += line
-    
+
     for entity, dependency in doc.get_entities_dependencies().items():
         ent = Entity.query.filter_by(text=entity).first()
 
         if not ent:
-            ent = Entity(text=entity, 
+            ent = Entity(text=entity,
                          count=1
                          )
             db.session.add(ent)
@@ -61,19 +63,20 @@ def result():
             tok = Token.query.filter_by(text=d[2], entity_id=ent.id).first()
 
             if not tok:
-                tok = Token(head=d[0], 
-                            dependency=d[1], 
-                            text=d[2], 
+                tok = Token(head=d[0],
+                            dependency=d[1],
+                            text=d[2],
                             count=1,
                             entity_id=ent.id
                             )
                 db.session.add(tok)
             else:
                 tok.count += 1
-    
+
     db.session.commit()
 
     return render_template('result.html', markup=markup_paragraphed, dependencies=deps)
+
 
 @app.get('/data')
 def database():
