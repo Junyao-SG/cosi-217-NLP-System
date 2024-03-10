@@ -46,7 +46,21 @@ def result():
             markup_paragraphed += '<p/>\n'
         else:
             markup_paragraphed += line
+  
+    update_database(doc=doc)
 
+    return render_template('result.html', markup=markup_paragraphed, dependencies=deps)
+
+
+@app.get('/data')
+def database():
+    entities = Entity.query.all()
+    return render_template('data.html', entities=entities)
+
+
+def update_database(doc):
+    """ helper function for updating database 
+    """
     for entity, dependency in doc.get_entities_dependencies().items():
         ent = Entity.query.filter_by(text=entity).first()
 
@@ -55,12 +69,13 @@ def result():
                          count=1
                          )
             db.session.add(ent)
-            db.session.commit()
-        else:
-            ent.count += 1
 
         for d in dependency:
-            tok = Token.query.filter_by(text=d[2], entity_id=ent.id).first()
+            tok = Token.query.filter_by(text=d[2],
+                                        dependency=d[1],
+                                        head=d[0],
+                                        entity_id=ent.id
+                                        ).first()
 
             if not tok:
                 tok = Token(head=d[0],
@@ -72,16 +87,12 @@ def result():
                 db.session.add(tok)
             else:
                 tok.count += 1
+        
+        db.session.flush()
+
+        ent.count = sum(token.count for token in ent.token) / len(entity.split(" "))
 
     db.session.commit()
-
-    return render_template('result.html', markup=markup_paragraphed, dependencies=deps)
-
-
-@app.get('/data')
-def database():
-    entities = Entity.query.all()
-    return render_template('data.html', entities=entities)
 
 
 if __name__ == '__main__':

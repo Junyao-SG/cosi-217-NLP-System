@@ -15,7 +15,7 @@
             <div class="entity">
                 <strong>Entity: </strong> {{ entity.text }}
                 <br>
-                <strong>Count: </strong> {{entity.count}}
+                <strong>Count: </strong> {{ entity.count }}
                 <div>
                     <strong>Tokens:</strong>
                     <table>
@@ -27,7 +27,7 @@
                         </tr>
                         {% for token in entity.token %}
                             <tr>
-                                <td>{{token.count}}</td>
+                                <td>{{ token.count }}</td>
                                 <td>{{ token.head }}</td>
                                 <td>{{ token.dependency }}</td>
                                 <td>{{ token.text }}</td>
