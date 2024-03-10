@@ -1,41 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Entity and Dependency Database</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Entity and Dependency Database</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
     
-</head>
-<body>
-    <h1>Entity and Dependency Database</h1>
-    <p><a href="/" class="styled-button">back to form</a></p>
+    </head>
+    <body>
 
-    {% for entity in entities %}
-        <div class="entity">
-            <strong>Entity: </strong> {{ entity.text }}
-            <br>
-            <strong>Count: </strong> {{entity.count}}
-            <div>
-                <strong>Tokens:</strong>
-                <table>
-                    <tr>
-                        <th>Count</th>
-                        <th>Head</th>
-                        <th>Dependency</th>
-                        <th>Text</th>
-                    </tr>
-                    {% for token in entity.token %}
+        <h2>entity and dependency database</h2>
+
+        <p><a href="/" class="styled-button">back to form</a></p>
+
+        {% for entity in entities %}
+            <div class="entity">
+                <strong>Entity: </strong> {{ entity.text }}
+                <br>
+                <strong>Count: </strong> {{entity.count}}
+                <div>
+                    <strong>Tokens:</strong>
+                    <table>
                         <tr>
-                            <td>{{token.count}}</td>
-                            <td>{{ token.head }}</td>
-                            <td>{{ token.dependency }}</td>
-                            <td>{{ token.text }}</td>
+                            <th>Count</th>
+                            <th>Head</th>
+                            <th>Dependency</th>
+                            <th>Text</th>
                         </tr>
-                    {% endfor %}
-                </table>
+                        {% for token in entity.token %}
+                            <tr>
+                                <td>{{token.count}}</td>
+                                <td>{{ token.head }}</td>
+                                <td>{{ token.dependency }}</td>
+                                <td>{{ token.text }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
 
-</body>
+    </body>
 </html>
