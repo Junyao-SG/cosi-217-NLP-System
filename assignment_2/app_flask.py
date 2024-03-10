@@ -5,27 +5,25 @@ import ner
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sent_ner.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ner_dep.db'
 db = SQLAlchemy(app)
 
-# database models
-class Sentence(db.Model):
+# data models
+class Entity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sentence = db.Column(db.String, nullable=False)
-    timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
-    ner = db.relationship('NER', backref='author', lazy=True)
+    text = db.Column(db.String, nullable=False)
+    # type = db.Column(db.String, nullable=False)
+    count = db.Column(db.Integer, default=0, nullable=False)
+    token = db.relationship('Token', backref='author', lazy=True)
 
-    def __repr__(self) -> str:
-        return f"Sentence( sentence={self.sentence} timestamp={self.timestamp})"
-
-class NER(db.Model):
+class Token(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    entity = db.Column(db.String, nullable=False)
-    entity_type = db.Column(db.String, nullable=False)
-    sentence_id = db.Column(db.Integer, db.ForeignKey('sentence.id'), nullable=False)
+    head = db.Column(db.String, nullable=False)
+    dependency = db.Column(db.String, nullable=False)
+    text = db.Column(db.String, nullable=False)
+    count = db.Column(db.Integer, default=0, nullable=False)
+    entity_id = db.Column(db.Integer, db.ForeignKey('entity.id'), nullable=False)
 
-    def __repr__(self):
-        return f"NER( entities={self.entity} type={self.entity_type}')"
 
 @app.get('/')
 def index():
@@ -47,23 +45,40 @@ def result():
         else:
             markup_paragraphed += line
     
-    for sent_ent in doc.get_entities_sentence_wise():
-        sent = Sentence(sentence=sent_ent[0])
-        db.session.add(sent)
+    for entity, dependency in doc.get_entities_dependencies().items():
+        ent = Entity.query.filter_by(text=entity).first()
 
-        sent = Sentence.query.filter_by(sentence=sent_ent[0], ner=None).first()
-        for ent in sent_ent[1]:
-            ner_ = NER(entity=ent[1], entity_type=ent[0], sentence_id=sent.id)
-            db.session.add(ner_)
+        if not ent:
+            ent = Entity(text=entity, 
+                         count=1
+                         )
+            db.session.add(ent)
+            db.session.commit()
+        else:
+            ent.count += 1
 
+        for d in dependency:
+            tok = Token.query.filter_by(text=d[2], entity_id=ent.id).first()
+
+            if not tok:
+                tok = Token(head=d[0], 
+                            dependency=d[1], 
+                            text=d[2], 
+                            count=1,
+                            entity_id=ent.id
+                            )
+                db.session.add(tok)
+            else:
+                tok.count += 1
+    
     db.session.commit()
 
     return render_template('result.html', markup=markup_paragraphed, dependencies=deps)
 
 @app.get('/data')
 def database():
-    sentences = Sentence.query.all()
-    return render_template('data.html', sentences=sentences)
+    entities = Entity.query.all()
+    return render_template('data.html', entities=entities)
 
 
 if __name__ == '__main__':

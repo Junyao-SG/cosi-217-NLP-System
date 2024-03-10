@@ -6,8 +6,11 @@ Run spaCy NER over an input string and insert XML tags for each entity.
 
 import io
 import spacy
+from collections import defaultdict
+
 
 nlp = spacy.load("en_core_web_sm")
+
 
 class SpacyDocument:
 
@@ -22,18 +25,6 @@ class SpacyDocument:
         entities = []
         for e in self.doc.ents:
             entities.append((e.start_char, e.end_char, e.label_, e.text))
-        return entities
-    
-    def get_entities_sentence_wise(self) -> list:
-        entities = []
-
-        for sentence in self.doc.sents:
-            sent_entities = []
-            for entity in sentence.ents:
-                sent_entities.append((entity.label_, entity.text))
-            
-            entities.append((str(sentence), sent_entities))
-
         return entities
 
     def get_entities_with_markup(self) -> str:
@@ -63,6 +54,19 @@ class SpacyDocument:
                                   token.text))
             dependencies.append((str(sentence), sent_deps))
         return dependencies
+    
+
+    def get_entities_dependencies(self):
+        """ return a dictionary with structure {str0: [str1, str2, str3]} """
+        ent_dep = defaultdict(list)
+
+        for entity in self.doc.ents:
+            for token in entity:
+                ent_dep[entity.text].append([token.head.text, 
+                                             token.dep_, 
+                                             token.text])
+                
+        return ent_dep
 
 
 if __name__ == '__main__':
@@ -77,4 +81,5 @@ if __name__ == '__main__':
         print(entity)
     print(doc.get_entities_with_markup())
 
-    print(doc.get_entities_sentence_wise())
+    print(doc.get_entities_dependencies())
+    print(doc.get_entities())

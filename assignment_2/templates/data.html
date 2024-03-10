@@ -2,25 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NER Data</title>
+    <title>Entity and Dependency Database</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+    
 </head>
 <body>
-    <h1>Named Entity Recognition Data</h1>
+    <h1>Entity and Dependency Database</h1>
     <p><a href="/" class="styled-button">back to form</a></p>
 
-    {% for sentence in sentences %}
-        <div class="sentence">
-            <strong>Timestamp:</strong> {{ sentence.timestamp }}
+    {% for entity in entities %}
+        <div class="entity">
+            <strong>Entity: </strong> {{ entity.text }}
             <br>
-            <strong>Sentence:</strong> {{ sentence.sentence }}
+            <strong>Count: </strong> {{entity.count}}
             <div>
-                <strong>Entities:</strong>
-                <ul>
-                    {% for entity in sentence.ner %}
-                        <li class="entity">{{ entity.entity_type }}: {{ entity.entity }}</li>
+                <strong>Tokens:</strong>
+                <table>
+                    <tr>
+                        <th>Count</th>
+                        <th>Head</th>
+                        <th>Dependency</th>
+                        <th>Text</th>
+                    </tr>
+                    {% for token in entity.token %}
+                        <tr>
+                            <td>{{token.count}}</td>
+                            <td>{{ token.head }}</td>
+                            <td>{{ token.dependency }}</td>
+                            <td>{{ token.text }}</td>
+                        </tr>
                     {% endfor %}
-                </ul>
+                </table>
             </div>
         </div>
     {% endfor %}

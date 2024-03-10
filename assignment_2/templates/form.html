@@ -1,4 +1,7 @@
 <html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+  </head>
 
   <body>
 
@@ -8,7 +11,7 @@
 
     <form method="POST" action="/">
       <textarea name="text" rows="5" cols="80">{{input}}</textarea>
-      <p><input type="submit"/></p>
+      <p><input type="submit" class="styled-button"/></p>
     </form>
 
   </body>
