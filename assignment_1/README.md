@@ -1,7 +1,7 @@
 # COSI-217 Assignment 1
 
 This assignment runs in a conda env with python=3.11.
-After create the virtural environment, run:
+After create the virtual environment, run:
 
 ```bash
 pip install -r requirements.txt
