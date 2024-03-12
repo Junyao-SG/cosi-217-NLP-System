@@ -12,7 +12,6 @@ db = SQLAlchemy(app)
 class Entity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String, nullable=False)
-    # type = db.Column(db.String, nullable=False)
     count = db.Column(db.Integer, default=0, nullable=False)
     token = db.relationship('Token', backref='author', lazy=True)
 
@@ -47,6 +46,7 @@ def result():
         else:
             markup_paragraphed += line
   
+    # flush processed entities and dependencies to database
     update_database(doc=doc)
 
     return render_template('result.html', markup=markup_paragraphed, dependencies=deps)
@@ -62,8 +62,11 @@ def update_database(doc):
     """ helper function for updating database 
     """
     for entity, dependency in doc.get_entities_dependencies().items():
+
+        # try to get identical entity 
         ent = Entity.query.filter_by(text=entity).first()
 
+        # create one for non exist enity
         if not ent:
             ent = Entity(text=entity,
                          count=1
@@ -71,12 +74,14 @@ def update_database(doc):
             db.session.add(ent)
 
         for d in dependency:
+            # try to get token
             tok = Token.query.filter_by(text=d[2],
                                         dependency=d[1],
                                         head=d[0],
                                         entity_id=ent.id
                                         ).first()
 
+            # create one token if it not exists
             if not tok:
                 tok = Token(head=d[0],
                             dependency=d[1],
@@ -88,8 +93,10 @@ def update_database(doc):
             else:
                 tok.count += 1
         
+        # flush all tokens into database at first
         db.session.flush()
 
+        # calculate frequency for the current entity
         ent.count = sum(token.count for token in ent.token) / len(entity.split(" "))
 
     db.session.commit()
