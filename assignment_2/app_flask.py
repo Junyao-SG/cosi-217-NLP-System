@@ -10,19 +10,32 @@ db = SQLAlchemy(app)
 
 # data models
 class Entity(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String, nullable=False)
-    count = db.Column(db.Integer, default=0, nullable=False)
-    token = db.relationship('Token', backref='author', lazy=True)
+    id = db.Column(db.Integer,
+                   primary_key=True)
+    text = db.Column(db.String,
+                     nullable=False)
+    count = db.Column(db.Integer, default=0,
+                      nullable=False)
+    token = db.relationship('Token',
+                            backref='author',
+                            lazy=True)
 
 
 class Token(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    head = db.Column(db.String, nullable=False)
-    dependency = db.Column(db.String, nullable=False)
-    text = db.Column(db.String, nullable=False)
-    count = db.Column(db.Integer, default=0, nullable=False)
-    entity_id = db.Column(db.Integer, db.ForeignKey('entity.id'), nullable=False)
+    id = db.Column(db.Integer,
+                   primary_key=True)
+    head = db.Column(db.String,
+                     nullable=False)
+    dependency = db.Column(db.String,
+                           nullable=False)
+    text = db.Column(db.String,
+                     nullable=False)
+    count = db.Column(db.Integer,
+                      default=0,
+                      nullable=False)
+    entity_id = db.Column(db.Integer,
+                          db.ForeignKey('entity.id'),
+                          nullable=False)
 
 
 @app.get('/')
