@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
-
 import ner
 
 app = Flask(__name__)
@@ -14,7 +13,8 @@ class Entity(db.Model):
                    primary_key=True)
     text = db.Column(db.String,
                      nullable=False)
-    count = db.Column(db.Integer, default=0,
+    count = db.Column(db.Integer,
+                      default=0,
                       nullable=False)
     token = db.relationship('Token',
                             backref='author',
