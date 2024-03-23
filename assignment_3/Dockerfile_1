@@ -1,6 +1,6 @@
 FROM nlp_system_base_env
 
-WORKDIR /app/assignment_1
+COPY ./assignment_1 .
 
 EXPOSE 8000
 

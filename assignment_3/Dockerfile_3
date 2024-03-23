@@ -1,12 +1,6 @@
-FROM python:3.11-slim
+FROM nlp_system_base_env
 
-WORKDIR /app
-
-COPY . .
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-WORKDIR /app/assignment_2
+COPY ./assignment_2 .
 
 EXPOSE 5000
 
