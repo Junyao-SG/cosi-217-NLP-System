@@ -1,7 +1,13 @@
-FROM nlp_system_base_env
+FROM python:3.11-slim
 
-COPY ./assignment_2 .
+WORKDIR /app
 
-EXPOSE 5000
+COPY ./requirements.txt .
 
-CMD ["python", "app_flask.py"]
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ./assignment_3/app_flask .
+
+EXPOSE 8000
+
+CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0", "app_flask:app"]

@@ -1,6 +1,12 @@
-FROM nlp_system_base_env
+FROM python:3.11-slim
 
-COPY ./assignment_1 .
+WORKDIR /app
+
+COPY ./requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ./assignment_3/app_streamlit .
 
 EXPOSE 8501
 

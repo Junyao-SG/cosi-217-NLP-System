@@ -1,0 +1,22 @@
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+      <title>spaCy processing</title>
+  </head>
+
+  <body>
+
+    <h2>spaCy processing</h2>
+
+    <p>Replace the text below (or use it) and click submit.</p>
+
+    <form method="POST" action="/">
+        <label>
+            <textarea name="text" rows="5" cols="80">{{input}}</textarea>
+        </label>
+        <p><input type="submit" class="styled-button"/></p>
+    </form>
+
+  </body>
+
+</html>

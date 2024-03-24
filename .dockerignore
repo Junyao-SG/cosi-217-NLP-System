@@ -3,9 +3,12 @@
 .gitignore
 .Da_Store
 */instance
+*/*/instance
 */__*
+*/*/__*
 Docker*
+docker*
+*/docker*
 .docker*
-assignment_3
 README.md
 */README.md

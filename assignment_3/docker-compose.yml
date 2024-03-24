@@ -1,0 +1,33 @@
+services:
+  base:
+    build:
+      context: ../
+      dockerfile: ./assignment_3/Dockerfile_0
+    image: nlp-cpu-env
+
+  fastapi:
+    image: nlp-cpu-env
+    working_dir: /app/app_fastapi
+    ports:
+      - "8050:8050"
+    command: uvicorn fastapi_app:app --host=0.0.0.0 --port=8050
+  
+  streamlit:
+    image: nlp-cpu-env
+    working_dir: /app/app_streamlit
+    ports:
+      - "8501:8501"
+    command: streamlit run streamlit_app.py --server.port=8501 --server.address=0.0.0.0
+  
+  flask:
+    image: nlp-cpu-env
+    working_dir: /app/app_flask
+    ports:
+      - "8000:8000"
+    volumes:
+      - app-data:/app/app_flask/instance
+    command: gunicorn -w 2 -b 0.0.0.0 'app_flask:app'
+
+    
+volumes:
+  app-data:
