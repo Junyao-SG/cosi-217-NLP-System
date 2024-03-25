@@ -14,7 +14,7 @@ Waiting for almost 40 sec, open a browser and go to three addresses for these th
 
 - Fastapi: <http://localhost:8050> 
 - Streamlit: <http://localhost:8501> 
-- Flask: <http://locahost:8000> (this is the only one taking time longer than 30 sec; it includes a delay to ensure the MySQL server is ready for connections.)
+- Flask: <http://127.0.0.1:8000> (this is the only one taking time longer than 30 sec; it includes a delay to ensure the MySQL server is ready for connections.)
 
 
 ## Step Three
