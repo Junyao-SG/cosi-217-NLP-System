@@ -12,9 +12,28 @@ docker compose -f assignment_3/docker-compose.yml up
 ```
 Waiting for almost 40 sec, open a browser and go to three addresses for these three applications:
 
-- Fastapi: <http://localhost:8050> 
-- Streamlit: <http://localhost:8501> 
-- Flask: <http://127.0.0.1:8000> (this is the only one taking time longer than 30 sec; it includes a delay to ensure the MySQL server is ready for connections.)
+1. Fastapi: <http://localhost:8050> 
+    1. Ensure current working path is in ./assignment_3/app_fastapi for using the local file *input.json* (this app is running in a Docker container, but the commands below reuire a local file for processing)
+        ```bash
+        cd ./assignment_3/app_fastapi
+        ```
+    1. Run any cmd (with or without the parameter *pretty*) below:
+
+        ```bash
+        curl http://localhost:8050
+        curl http://localhost:8050/ner -H "Content-Type: application/json" -d@input.json
+        curl http://localhost:8050/dep -H "Content-Type: application/json" -d@input.json
+        ```
+
+        ```bash
+        curl http://localhost:8050?pretty=true
+        curl http://localhost:8050/ner?pretty=true -H "Content-Type: application/json" -d@input.json
+        curl http://localhost:8050/dep?pretty=true -H "Content-Type: application/json" -d@input.json
+        ```
+1. Streamlit: <http://localhost:8501> 
+    - go to the webpage
+1. Flask: <http://127.0.0.1:8000> (this is the only one taking time longer than 30 sec; it includes a delay to ensure the MySQL server is ready for connections.)
+    - go to the webpage
 
 
 ## Step Three

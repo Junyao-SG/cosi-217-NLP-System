@@ -10,18 +10,17 @@ class TextModel(BaseModel):
     text: str
 
 
-@app.get("/")
-def fastapi_spacy(pretty: bool = False):
-    example_url = "http://127.0.0.1:8000/ner?pretty=true"
-    message = {
-        "description": "Fastapi webpage to access the spaCy NER and Dependency",
-        "usage_example": f"curl {example_url} -H 'Content-Type: application/json' -d@input.json"
-    }
-
+@app.get('/')
+def index(pretty: bool = False):
+    url = "http://localhost:8050"
+    answer = {
+        "description": "Interface to the spaCy entity extractor",
+        "get named entities": f'curl -H "Content-Type: application/json" -d@input.json {url}/ner',
+        "get dependencies": f'curl -H "Content-Type: application/json" -d@input.json {url}/dep'
+        }
     if pretty:
-        return prettify(message)
-
-    return message
+        answer = prettify(answer)
+    return answer
 
 
 @app.post("/ner")

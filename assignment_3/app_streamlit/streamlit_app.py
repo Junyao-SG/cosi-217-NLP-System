@@ -1,59 +1,68 @@
 from collections import Counter
+from operator import itemgetter
+
 import streamlit as st
 import pandas as pd
 import altair as alt
-from graphviz import Digraph
-import ner_dep
+
+import ner
+import utils
 
 
-example = "Sebastian Thrun worked at Google in 2007."
+def change_view():
+    print(f"Now viewing {view}")
 
-st.title("spaCy NER and Dependency")
+example = open('input.txt').read()
 
-st.sidebar.title("Setting")
-view = st.sidebar.radio('select view',
-                        ['entities', 'dependencies']
-                        )
-st.sidebar.info(f'Selected: {view}')
+st.set_page_config(layout='wide')
+st.markdown('# spaCy visualization')
+
+st.sidebar.markdown('# Settings')
+view = st.sidebar.radio(
+    '**Select view**',
+    options=['entities', 'dependencies'],
+    on_change=change_view)
+
 
 text = st.text_area('Text to process', value=example, height=100)
 
-# processing text for rendering
-doc = ner_dep.SpacyDocument(text)
+doc = ner.SpacyDocument(text)
 
 entities = doc.get_entities()
 tokens = doc.get_tokens()
-counter = Counter(tokens)
-words = list(sorted(counter.most_common(30)))
-dep = doc.get_dependencies()
+dependencies = doc.get_dependencies()
 
-chart = pd.DataFrame({
-    'frequency': [w[1] for w in words],
-    'word': [w[0] for w in words]})
 
-bar_chart = alt.Chart(chart).mark_bar().encode(x='word', y='frequency')
+if view == 'entities':
 
-dep_graph = Digraph(comment='Dependency Graph')
-for token in doc.get_doc():
-    dep_graph.node(token.text, token.text)
-    dep_graph.edge(token.head.text, token.text, label=token.dep_)
+    counter = Counter(tokens)
+    words = list(sorted(counter.most_common(30)))
 
-st.markdown(f'Total number of tokens: {len(tokens)}<br/>'
+    chart = pd.DataFrame({
+        'frequency': [w[1] for w in words],
+        'word': [w[0] for w in words]})
+    bar_chart = alt.Chart(chart).mark_bar().encode(x='word', y='frequency')
+
+    entities_tab, tokens_tab = st.tabs(['entities', 'tokens'])
+    with entities_tab:
+        st.table(entities)
+    with tokens_tab:
+        st.markdown(
+            f'Total number of tokens: {len(tokens)}<br/>'
             f'Total number of types: {len(counter)}', unsafe_allow_html=True)
-
-# rander tabs for table and graph
-tab1, tab2 = st.tabs(["table", "graph"])
-
-with tab1:
-    if view == 'entities':
-        st.header("entities")
-        st.dataframe(entities, use_container_width=True)
-    elif view == 'dependencies':
-        st.dataframe(dep, use_container_width=True)
-
-with tab2:
-    if view == 'entities':
-        st.header("frequency")
         st.altair_chart(bar_chart)
-    elif view == 'dependencies':
-        st.graphviz_chart(dep_graph)
+
+
+if view == 'dependencies':
+
+    for sentence, deps in dependencies:
+
+        deps = [d[1:] for d in deps]
+        graph = utils.create_graph(deps)
+
+        st.info(sentence)
+        tab1, tab2 = st.tabs(['table', 'graph'])
+        with tab1:
+            st.table(deps[2:])
+        with tab2:
+            st.graphviz_chart(graph)
