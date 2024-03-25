@@ -33,7 +33,7 @@ Waiting for almost 40 sec, open a browser and go to three addresses for these th
 
 1. Streamlit: <http://localhost:8501>
     - go to the webpage
-1. Flask: <http://127.0.0.1:8000> (this is the only one taking time longer than 30 sec; it includes a delay to ensure the MySQL server is ready for connections.)
+1. Flask: <http://localhost:8000> (this is the only one taking time longer than 30 sec; it includes a delay to ensure the MySQL server is ready for connections.)
     - go to the webpage
 
 ## Step Three
