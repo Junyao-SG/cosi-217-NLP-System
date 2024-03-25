@@ -16,7 +16,7 @@ docker compose -f assignment_3/docker-compose.yml up
 
 Waiting for almost 40 sec, open a browser and go to three addresses for these three applications:
 
-1. Fastapi: <http://localhost:8050> 
+1. Fastapi: <http://localhost:8050>
     1. Ensure current working path is in ./assignment_3/app_fastapi for using the local file *input.json* (this app is running in a Docker container, but the commands below require a local file for processing)
 
         ```bash
