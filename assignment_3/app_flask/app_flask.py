@@ -1,11 +1,26 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 import ner
+import os
+import time
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '216aa7a8932afe34c4282970359de6602db266b7ca18224fab0df97cc547bb3f'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ner_dep.db'
+
+# Configure the SQLAlchemy connection string
+db_user = os.getenv('MYSQL_USER')
+db_password = os.getenv('MYSQL_PASSWORD')
+db_host = os.getenv('MYSQL_HOST')
+db_name = os.getenv('MYSQL_DB')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}'
+
+# Add a delay before creating the SQLAlchemy instance
+delay_seconds = 30
+print(f"Waiting for {delay_seconds} seconds before connecting to the database...")
+time.sleep(delay_seconds)
+
 db = SQLAlchemy(app)
 
 
@@ -13,7 +28,7 @@ db = SQLAlchemy(app)
 class Entity(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True)
-    text = db.Column(db.String,
+    text = db.Column(db.String(255),
                      nullable=False)
     count = db.Column(db.Integer,
                       default=0,
@@ -26,11 +41,11 @@ class Entity(db.Model):
 class Token(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True)
-    head = db.Column(db.String,
+    head = db.Column(db.String(255),
                      nullable=False)
-    dependency = db.Column(db.String,
+    dependency = db.Column(db.String(255),
                            nullable=False)
-    text = db.Column(db.String,
+    text = db.Column(db.String(255),
                      nullable=False)
     count = db.Column(db.Integer,
                       default=0,
@@ -38,10 +53,6 @@ class Token(db.Model):
     entity_id = db.Column(db.Integer,
                           db.ForeignKey('entity.id'),
                           nullable=False)
-
-# create tables based on the defined models
-with app.app_context():
-        db.create_all()
 
 
 @app.get('/')
@@ -122,4 +133,7 @@ def update_database(doc):
 
 
 if __name__ == '__main__':
-    app.run()
+    with app.app_context():
+        db.create_all()
+
+    app.run(port=8000, host='0.0.0.0')

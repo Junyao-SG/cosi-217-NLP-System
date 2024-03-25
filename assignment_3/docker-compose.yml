@@ -2,7 +2,7 @@ services:
   base:
     build:
       context: ../
-      dockerfile: ./assignment_3/Dockerfile_0
+      dockerfile: ./assignment_3/Dockerfile
     image: nlp-cpu-env
 
   fastapi:
@@ -18,16 +18,26 @@ services:
     ports:
       - "8501:8501"
     command: streamlit run streamlit_app.py --server.port=8501 --server.address=0.0.0.0
-  
-  flask:
+
+  flask-networked:
     image: nlp-cpu-env
     working_dir: /app/app_flask
     ports:
       - "8000:8000"
+    command: python app_flask.py
+    environment:
+      MYSQL_HOST: sql_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: mydatabase
+  
+  sql_db:
+    image: mysql:8.0
     volumes:
-      - app-data:/app/app_flask/instance
-    command: gunicorn -w 2 -b 0.0.0.0 'app_flask:app'
-
-    
+      - sql-data-db:/var/lib/mysql
+    environment: 
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mydatabase
+  
 volumes:
-  app-data:
+  sql-data-db:
