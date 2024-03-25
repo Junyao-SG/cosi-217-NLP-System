@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import ner_dep
 import json
 
+
 app = FastAPI()
 
 
