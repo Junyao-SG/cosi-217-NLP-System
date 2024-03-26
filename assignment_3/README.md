@@ -11,10 +11,13 @@ Open a terminal from the root directory of this repo folder
 Use docker compose to build and run apps by creating an image *nlp-cpu-env* and multiple containers. Use *--build* flag to rebuild the image forcely.
 
 ```bash
-docker compose -f assignment_3/docker-compose.yml up
+docker compose -f assignment_3/docker-compose.yml up -d
+```
+```bash
+docker compose -f assignment_3/docker-compose.yml up -d --build
 ```
 
-Waiting for almost 40 sec, open a browser and go to three addresses for these three applications:
+Waiting for almost 30 sec, open a browser and go to three addresses for these three applications:
 
 1. Fastapi: <http://localhost:8050>
     1. Ensure current working path is in ./assignment_3/app_fastapi for using the local file *input.json* (this app is running in a Docker container, but the commands below require a local file for processing)
@@ -38,7 +41,7 @@ Waiting for almost 40 sec, open a browser and go to three addresses for these th
 
 ## Step Three
 
-Use cmd below to bring everything down, removing containers entirely.
+Use cmd below to bring everything down, removing containers entirely. (Make sure to stay in the root dir of this repo.)
 
 ```bash
 docker compose -f assignment_3/docker-compose.yml down
