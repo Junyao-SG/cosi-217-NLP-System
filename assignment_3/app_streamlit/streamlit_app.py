@@ -1,16 +1,14 @@
 from collections import Counter
-from operator import itemgetter
-
 import streamlit as st
 import pandas as pd
 import altair as alt
-
 import ner
 import utils
 
 
 def change_view():
     print(f"Now viewing {view}")
+
 
 example = open('input.txt').read()
 
@@ -23,7 +21,6 @@ view = st.sidebar.radio(
     options=['entities', 'dependencies'],
     on_change=change_view)
 
-
 text = st.text_area('Text to process', value=example, height=100)
 
 doc = ner.SpacyDocument(text)
@@ -32,9 +29,7 @@ entities = doc.get_entities()
 tokens = doc.get_tokens()
 dependencies = doc.get_dependencies()
 
-
 if view == 'entities':
-
     counter = Counter(tokens)
     words = list(sorted(counter.most_common(30)))
 
@@ -52,11 +47,9 @@ if view == 'entities':
             f'Total number of types: {len(counter)}', unsafe_allow_html=True)
         st.altair_chart(bar_chart)
 
-
 if view == 'dependencies':
 
     for sentence, deps in dependencies:
-
         deps = [d[1:] for d in deps]
         graph = utils.create_graph(deps)
 

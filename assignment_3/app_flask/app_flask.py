@@ -96,7 +96,7 @@ def update_database(doc):
         # try to get identical entity 
         ent = Entity.query.filter_by(text=entity).first()
 
-        # create one for non exist enity
+        # create one for non exist entity
         if not ent:
             ent = Entity(text=entity,
                          count=1

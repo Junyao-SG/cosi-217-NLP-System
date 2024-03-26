@@ -23,7 +23,7 @@ Waiting for almost 40 sec, open a browser and go to three addresses for these th
         cd ./assignment_3/app_fastapi
         ```
 
-    1. Run any cmd:
+    2. Run any cmd:
 
         ```bash
         curl "http://localhost:8050?pretty=true"
@@ -31,9 +31,9 @@ Waiting for almost 40 sec, open a browser and go to three addresses for these th
         curl "http://localhost:8050/dep?pretty=true" -H "Content-Type: application/json" -d@input.json
         ```
 
-1. Streamlit: <http://localhost:8501>
+2. Streamlit: <http://localhost:8501>
     - go to the webpage
-1. Flask: <http://localhost:8000> (this is the only one taking time longer than 30 sec; it includes a delay to ensure the MySQL server is ready for connections.)
+3. Flask: <http://localhost:8000> (this is the only one taking time longer than 30 sec; it includes a delay to ensure the MySQL server is ready for connections.)
     - go to the webpage
 
 ## Step Three

@@ -50,8 +50,8 @@ def dependency_parsing(text_model: TextModel, pretty: bool = False):
 
 
 def prettify(result: dict):
-    '''
+    """
     borrowed from given code
-    '''
+    """
     json_str = json.dumps(result, indent=2)
     return Response(content=json_str, media_type='application/json')
